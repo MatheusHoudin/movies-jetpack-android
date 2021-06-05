@@ -1,11 +1,14 @@
 package com.houdin.br.movies.features.movies.presentation
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.houdin.br.movies.databinding.MoviesLayoutBinding
 import com.houdin.br.movies.features.movies.viewmodel.MoviesViewModel
 import com.houdin.br.movies.shared.model.ResultData
@@ -17,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MoviesFragment : Fragment() {
 
+    private val moviesAdapter = MoviesAdapter()
     private val moviesViewModel by viewModels<MoviesViewModel>()
 
     override fun onCreateView(
@@ -26,6 +30,11 @@ class MoviesFragment : Fragment() {
     ): View {
         val binding = MoviesLayoutBinding.inflate(inflater, container, false)
         initData(binding)
+        binding.homeRvMovies.apply {
+            layoutManager = GridLayoutManager(context, 3)
+            addItemDecoration(MoviesListDecorator())
+            adapter = moviesAdapter
+        }
         return binding.root
     }
 
@@ -37,6 +46,7 @@ class MoviesFragment : Fragment() {
                 }
                 is ResultData.Success -> {
                     binding.isLoadingMovies = false
+                    moviesAdapter.setList(it.data!!.results)
                 }
                 is ResultData.Failure -> {
 
@@ -46,5 +56,24 @@ class MoviesFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private inner class MoviesListDecorator : RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            super.getItemOffsets(outRect, view, parent, state)
+            val currentPosition = parent.getChildLayoutPosition(view)
+            val restOfDivision = currentPosition % 3
+            if (restOfDivision == 1) {
+                outRect.apply {
+                    right = 12
+                    left = 12
+                }
+            }
+        }
     }
 }
