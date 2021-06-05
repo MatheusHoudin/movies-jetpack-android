@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.houdin.br.movies.databinding.MoviesLayoutBinding
 import com.houdin.br.movies.features.movies.viewmodel.MoviesViewModel
 import com.houdin.br.movies.shared.model.ResultData
+import com.houdin.br.movies.shared.util.EndOfScrollListener
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -31,8 +32,10 @@ class MoviesFragment : Fragment() {
         val binding = MoviesLayoutBinding.inflate(inflater, container, false)
         initData(binding)
         binding.homeRvMovies.apply {
-            layoutManager = GridLayoutManager(context, 3)
+            val moviesLayoutManager = GridLayoutManager(context, 3)
+            layoutManager = moviesLayoutManager
             addItemDecoration(MoviesListDecorator())
+            addOnScrollListener(EndOfScrollListener(moviesLayoutManager) { initData(binding) })
             adapter = moviesAdapter
         }
         return binding.root
@@ -40,13 +43,13 @@ class MoviesFragment : Fragment() {
 
     private fun initData(binding: MoviesLayoutBinding) {
         moviesViewModel.fetchMovies().observe(viewLifecycleOwner, {
-            when(it) {
+            when (it) {
                 is ResultData.Loading -> {
                     binding.isLoadingMovies = true
                 }
                 is ResultData.Success -> {
                     binding.isLoadingMovies = false
-                    moviesAdapter.setList(it.data!!.results)
+                    moviesAdapter.addItems(it.data!!)
                 }
                 is ResultData.Failure -> {
 

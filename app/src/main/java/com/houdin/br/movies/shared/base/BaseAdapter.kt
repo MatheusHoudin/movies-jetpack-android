@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
  */
 abstract class BaseAdapter<ObjectType> : RecyclerView.Adapter<BaseViewHolder<ObjectType>>() {
 
-    private lateinit var dataSet: List<ObjectType>
+    private val dataSet = mutableListOf<ObjectType>()
 
     abstract fun getViewHolder(parent: ViewGroup): BaseViewHolder<ObjectType>
 
@@ -27,8 +27,11 @@ abstract class BaseAdapter<ObjectType> : RecyclerView.Adapter<BaseViewHolder<Obj
 
     override fun getItemCount() = dataSet.size
 
-    fun setList(values: List<ObjectType>) {
-        dataSet = values
+    fun addItems(values: List<ObjectType>) {
+        dataSet.apply {
+            clear()
+            addAll(values)
+        }
         notifyDataSetChanged()
     }
 }
