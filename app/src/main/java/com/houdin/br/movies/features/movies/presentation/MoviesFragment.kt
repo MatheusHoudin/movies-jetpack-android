@@ -1,14 +1,13 @@
 package com.houdin.br.movies.features.movies.presentation
 
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.houdin.br.movies.databinding.MoviesLayoutBinding
 import com.houdin.br.movies.features.movies.viewmodel.MoviesViewModel
 import com.houdin.br.movies.shared.model.ResultData
@@ -32,7 +31,7 @@ class MoviesFragment : Fragment() {
         val binding = MoviesLayoutBinding.inflate(inflater, container, false)
         initData(binding)
         binding.homeRvMovies.apply {
-            val moviesLayoutManager = GridLayoutManager(context, 3)
+            val moviesLayoutManager = GridLayoutManager(context, MOVIES_COLUMN_NUMBER)
             layoutManager = moviesLayoutManager
             addItemDecoration(MoviesListDecorator())
             addOnScrollListener(EndOfScrollListener(moviesLayoutManager) { initData(binding) })
@@ -52,31 +51,14 @@ class MoviesFragment : Fragment() {
                     moviesAdapter.addItems(it.data!!)
                 }
                 is ResultData.Failure -> {
-
-                }
-                is ResultData.Exception -> {
-
+                    binding.isLoadingMovies = false
+                    Toast.makeText(context, it.message!!, Toast.LENGTH_SHORT).show()
                 }
             }
         })
     }
 
-    private inner class MoviesListDecorator : RecyclerView.ItemDecoration() {
-        override fun getItemOffsets(
-            outRect: Rect,
-            view: View,
-            parent: RecyclerView,
-            state: RecyclerView.State
-        ) {
-            super.getItemOffsets(outRect, view, parent, state)
-            val currentPosition = parent.getChildLayoutPosition(view)
-            val restOfDivision = currentPosition % 3
-            if (restOfDivision == 1) {
-                outRect.apply {
-                    right = 12
-                    left = 12
-                }
-            }
-        }
+    private companion object {
+        const val MOVIES_COLUMN_NUMBER = 3
     }
 }
