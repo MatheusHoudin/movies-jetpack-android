@@ -1,9 +1,13 @@
 package com.houdin.br.movies.shared.repository
 
+import com.houdin.br.movies.UnitTest
 import com.houdin.br.movies.shared.api.DiscoverService
 import com.houdin.br.movies.shared.model.GenericListResponse
 import com.houdin.br.movies.shared.model.Movie
-import io.mockk.*
+import io.mockk.mockk
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.confirmVerified
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
@@ -29,7 +33,7 @@ class MoviesRepositoryTest : UnitTest() {
         )
         coEvery { discoverService.getMovies(any(), any()) } returns response
 
-        runBlocking { moviesRepository.fetchMoviesUseCase(1, 20) }
+        runBlocking { moviesRepository.fetchMovies(1, 20) }
 
         coVerify(exactly = 1) {
             discoverService.getMovies(1, 20)

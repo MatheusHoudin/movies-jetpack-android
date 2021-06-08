@@ -26,7 +26,7 @@ class FetchMoviesUseCaseImpl @Inject constructor(
         perPage: Int
     ): ResultData<GenericListResponse<Movie>> {
         return try {
-            val result = moviesRepository.fetchMoviesUseCase(page, perPage)
+            val result = moviesRepository.fetchMovies(page, perPage)
             ResultData.Success(result)
         } catch (e: IOException) {
             FailureOptions.noInternetConnectionFailure

@@ -1,4 +1,4 @@
-package com.houdin.br.movies.shared.repository
+package com.houdin.br.movies
 
 import org.junit.Before
 

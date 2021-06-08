@@ -9,13 +9,13 @@ import javax.inject.Inject
  * @author Matheus Gomes on 10/05/2021.
  */
 interface MoviesRepository {
-    suspend fun fetchMoviesUseCase(page: Int, perPage: Int): GenericListResponse<Movie>
+    suspend fun fetchMovies(page: Int, perPage: Int): GenericListResponse<Movie>
 }
 
 class MoviesRepositoryImpl @Inject constructor(
     private val discoverService: DiscoverService
 ) : MoviesRepository {
-    override suspend fun fetchMoviesUseCase(
+    override suspend fun fetchMovies(
         page: Int,
         perPage: Int
     ): GenericListResponse<Movie> = discoverService.getMovies(page, perPage)
