@@ -12,5 +12,10 @@ data class Movie(
     @SerializedName("release_date")
     val date: String,
     @SerializedName("poster_path")
-    val image: String?
+    val image: String?,
+    @SerializedName("adult")
+    val isAdult: Boolean,
+    val overview: String,
+    @SerializedName("vote_average")
+    val voteAverage: Double
 )

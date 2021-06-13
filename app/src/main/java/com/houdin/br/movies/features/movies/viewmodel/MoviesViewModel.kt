@@ -1,7 +1,6 @@
 package com.houdin.br.movies.features.movies.viewmodel
 
 import androidx.lifecycle.*
-import com.houdin.br.movies.shared.model.GenericListResponse
 import com.houdin.br.movies.shared.model.Movie
 import com.houdin.br.movies.shared.model.ResultData
 import com.houdin.br.movies.shared.usecase.FetchMoviesUseCase
