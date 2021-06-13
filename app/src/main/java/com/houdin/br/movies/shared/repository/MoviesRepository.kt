@@ -3,6 +3,8 @@ package com.houdin.br.movies.shared.repository
 import com.houdin.br.movies.shared.api.DiscoverService
 import com.houdin.br.movies.shared.model.GenericListResponse
 import com.houdin.br.movies.shared.model.Movie
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
@@ -18,5 +20,6 @@ class MoviesRepositoryImpl @Inject constructor(
     override suspend fun fetchMovies(
         page: Int,
         perPage: Int
-    ): GenericListResponse<Movie> = discoverService.getMovies(page, perPage)
+    ): GenericListResponse<Movie> =
+        withContext(Dispatchers.IO) { discoverService.getMovies(page, perPage) }
 }

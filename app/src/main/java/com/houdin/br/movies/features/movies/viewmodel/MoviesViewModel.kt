@@ -1,8 +1,6 @@
 package com.houdin.br.movies.features.movies.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.houdin.br.movies.shared.model.GenericListResponse
 import com.houdin.br.movies.shared.model.Movie
 import com.houdin.br.movies.shared.model.ResultData
@@ -25,19 +23,25 @@ class MoviesViewModel @Inject constructor(
     private var lastPage = INITIAL_PAGE
     private val movies = mutableListOf<Movie>()
 
-    fun fetchMovies() = liveData {
-        coroutineScope {
-            emit(ResultData.Loading())
-            val nextPageMoviesCall = async { fetchMoviesUseCase.fetchMovies(currentPage, PER_PAGE) }
-            val resultData = nextPageMoviesCall.await()
-            if (resultData is ResultData.Success) {
-                with(resultData.data!!) {
-                    movies.addAll(results)
-                    currentPage++
-                    lastPage = totalPages
-                }
-                emit(ResultData.Success<List<Movie>>(data = movies))
-            } else emit(resultData as ResultData<List<Movie>>)
+    private val _moviesResult = MutableLiveData<ResultData<List<Movie>>>()
+    val moviesResult: LiveData<ResultData<List<Movie>>>
+        get() = _moviesResult
+
+    fun fetchMovies() {
+        viewModelScope.launch {
+            coroutineScope {
+                _moviesResult.value = ResultData.Loading()
+                val nextPageMoviesCall = async { fetchMoviesUseCase.fetchMovies(currentPage, PER_PAGE) }
+                val resultData = nextPageMoviesCall.await()
+                if (resultData is ResultData.Success) {
+                    with(resultData.data!!) {
+                        movies.addAll(results)
+                        currentPage++
+                        lastPage = totalPages
+                    }
+                    _moviesResult.value = ResultData.Success<List<Movie>>(data = movies)
+                } else _moviesResult.postValue(resultData as ResultData<List<Movie>>)
+            }
         }
     }
 

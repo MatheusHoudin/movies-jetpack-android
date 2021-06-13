@@ -41,21 +41,24 @@ class MoviesFragment : Fragment() {
     }
 
     private fun initData(binding: MoviesLayoutBinding) {
-        moviesViewModel.fetchMovies().observe(viewLifecycleOwner, {
-            when (it) {
-                is ResultData.Loading -> {
-                    binding.isLoadingMovies = true
+        with(moviesViewModel) {
+            fetchMovies()
+            moviesResult.observe(viewLifecycleOwner, {
+                when (it) {
+                    is ResultData.Loading -> {
+                        binding.isLoadingMovies = true
+                    }
+                    is ResultData.Success -> {
+                        binding.isLoadingMovies = false
+                        moviesAdapter.addItems(it.data!!)
+                    }
+                    is ResultData.Failure -> {
+                        binding.isLoadingMovies = false
+                        Toast.makeText(context, it.message!!, Toast.LENGTH_SHORT).show()
+                    }
                 }
-                is ResultData.Success -> {
-                    binding.isLoadingMovies = false
-                    moviesAdapter.addItems(it.data!!)
-                }
-                is ResultData.Failure -> {
-                    binding.isLoadingMovies = false
-                    Toast.makeText(context, it.message!!, Toast.LENGTH_SHORT).show()
-                }
-            }
-        })
+            })
+        }
     }
 
     private companion object {
