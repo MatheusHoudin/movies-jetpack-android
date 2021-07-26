@@ -1,10 +1,13 @@
 package com.houdin.br.movies.shared.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * @author Matheus Gomes on 09/05/2021.
  */
+@Parcelize
 data class Movie(
     val id: Int,
     @SerializedName("original_title")
@@ -18,4 +21,4 @@ data class Movie(
     val overview: String,
     @SerializedName("vote_average")
     val voteAverage: Double
-)
+): Parcelable

@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.houdin.br.movies.R
 import com.houdin.br.movies.databinding.MoviesLayoutBinding
 import com.houdin.br.movies.features.movies.viewmodel.MoviesViewModel
 import com.houdin.br.movies.shared.model.ResultData
@@ -35,7 +37,13 @@ class MoviesFragment : Fragment() {
             layoutManager = moviesLayoutManager
             addItemDecoration(MoviesListDecorator())
             addOnScrollListener(EndOfScrollListener(moviesLayoutManager) { initData(binding) })
-            adapter = moviesAdapter
+            adapter = moviesAdapter.apply {
+                onCLick = { movie ->
+                    MoviesFragmentDirections.actionMoviesToMovieDetails(movie).let {
+                        findNavController().navigate(it)
+                    }
+                }
+            }
         }
         return binding.root
     }

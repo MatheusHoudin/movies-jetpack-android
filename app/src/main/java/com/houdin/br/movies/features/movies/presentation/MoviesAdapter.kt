@@ -13,6 +13,8 @@ import com.houdin.br.movies.shared.model.Movie
  */
 class MoviesAdapter : BaseAdapter<Movie>() {
 
+    lateinit var onCLick: (movie: Movie) -> Unit
+
     override fun getViewHolder(parent: ViewGroup) = MoviesViewHolder(
         MovieItemLayoutBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -27,7 +29,7 @@ class MoviesAdapter : BaseAdapter<Movie>() {
         BaseViewHolder<Movie>(binding.root) {
         override fun bind(item: Movie, position: Int) {
             binding.apply {
-                setClickListener {  }
+                setClickListener { onCLick(item) }
                 movie = item
                 executePendingBindings()
             }
