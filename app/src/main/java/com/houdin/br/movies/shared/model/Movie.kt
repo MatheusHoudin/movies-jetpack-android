@@ -10,7 +10,7 @@ data class Movie(
     @SerializedName("original_title")
     val name: String,
     @SerializedName("release_date")
-    val date: String,
+    val date: String?,
     @SerializedName("poster_path")
     val image: String?,
     @SerializedName("adult")

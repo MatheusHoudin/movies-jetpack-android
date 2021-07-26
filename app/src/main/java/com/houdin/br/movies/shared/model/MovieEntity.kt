@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey
 data class MovieEntity(
     @PrimaryKey val id: Int,
     val name: String,
-    val date: String,
+    val date: String?,
     val image: String?,
     @ColumnInfo(name = "adult") val isAdult: Boolean,
     val overview: String,

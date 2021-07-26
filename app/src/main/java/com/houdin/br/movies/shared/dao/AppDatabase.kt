@@ -7,7 +7,10 @@ import com.houdin.br.movies.shared.model.MovieEntity
 /**
  * @author Matheus Gomes on 13/06/2021.
  */
-@Database(entities = [MovieEntity::class], version = 1)
+@Database(
+    entities = [MovieEntity::class],
+    version = 2
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun movieDao(): MovieDAO
 }

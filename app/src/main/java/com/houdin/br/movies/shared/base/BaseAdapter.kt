@@ -1,11 +1,7 @@
 package com.houdin.br.movies.shared.base
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import androidx.databinding.BindingAdapter
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 
 /**
