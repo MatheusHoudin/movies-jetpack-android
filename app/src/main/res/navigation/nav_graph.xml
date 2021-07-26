@@ -15,7 +15,7 @@
             app:destination="@id/movie_details" />
     </fragment>
 
-    <fragment
+    <dialog
         android:id="@+id/movie_details"
         android:name="com.houdin.br.movies.features.moviedetails.presentation.MovieDetailsFragment"
         android:label="movie_detail_layout"
@@ -24,5 +24,5 @@
         <argument
             android:name="movie"
             app:argType="com.houdin.br.movies.shared.model.Movie" />
-    </fragment>
+    </dialog>
 </navigation>
